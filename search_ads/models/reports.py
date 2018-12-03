@@ -18,7 +18,7 @@ def get_campaign_adgroups_report(campaign,
                                  start_time=_today(),
                                  end_time=_today(),
                                  timezone='UTC',
-                                 granularity='HOURLY',
+                                 granularity='DAILY',
                                  selector=None,
                                  group_by=[],
                                  return_records_with_no_metrics=True,
@@ -43,7 +43,7 @@ def get_campaign_searchterms_report(campaign,
                                     start_time=_today(),
                                     end_time=_today(),
                                     timezone='UTC',
-                                    granularity='HOURLY',
+                                    granularity='DAILY',
                                     selector=None,
                                     group_by=[],
                                     return_records_with_no_metrics=True,
@@ -68,7 +68,7 @@ def get_campaign_keywords_report(campaign,
                                  start_time=_today(),
                                  end_time=_today(),
                                  timezone='UTC',
-                                 granularity='HOURLY',
+                                 granularity='DAILY',
                                  selector=None,
                                  group_by=[],
                                  return_records_with_no_metrics=True,
@@ -92,7 +92,7 @@ def get_campaign_report(org_id=None,
                         start_time=_today(),
                         end_time=_today(),
                         timezone='UTC',
-                        granularity='HOURLY',
+                        granularity='DAILY',
                         selector=None,
                         group_by=[],
                         return_records_with_no_metrics=True,
@@ -117,7 +117,7 @@ def _report(campaign=None,
             start_time=_today(),
             end_time=_today(),
             timezone='UTC',
-            granularity='HOURLY',
+            granularity='DAILY',
             selector=None,
             group_by=[],
             return_records_with_no_metrics=True,
@@ -146,6 +146,7 @@ def _report(campaign=None,
     else:
         url = "reports/campaigns"
     output = []
+
     api_res = api_post(url, org_id=org_id, data=data)
     try:
         res = api_res['data']['reportingDataResponse']['row']
@@ -166,7 +167,7 @@ def _report(campaign=None,
         for granularity in row['granularity']:
             final_row = copy.copy(base)
             final_row.update(granularity)
-            output.append(convert_keyword_id_to_string(convert_to_float_all_amounts_in_row(final_row)))
+            output.append(convert_to_float_all_amounts_in_row(final_row))
     return pd.DataFrame(output)
 
 
